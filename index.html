@@ -50,12 +50,22 @@
     <input type="number" id="view" placeholder="Nhập số view" oninput="calculateFromView()">
 
     <label for="money">Giá tiền (VNĐ):</label>
-    <input type="number" id="money" placeholder="Nhập giá tiền" oninput="calculateFromMoney()">
+    <input type="text" id="money" placeholder="Nhập giá tiền" oninput="calculateFromMoney()">
 
     <button onclick="resetFields()">Đặt lại</button>
 
     <script>
         const RATE_PER_1000 = 12.385; // Tỉ lệ tiền trên 1000 view
+
+        // Định dạng số tiền theo chuẩn VNĐ
+        function formatCurrency(amount) {
+            return parseFloat(amount).toLocaleString("vi-VN", { minimumFractionDigits: 0 });
+        }
+
+        // Xóa định dạng và chuyển về số nguyên
+        function parseCurrency(formatted) {
+            return parseInt(formatted.replace(/\./g, ""));
+        }
 
         function calculateFromView() {
             const viewInput = document.getElementById("view");
@@ -64,7 +74,7 @@
             const view = parseFloat(viewInput.value);
             if (!isNaN(view)) {
                 const money = (view / 1000) * RATE_PER_1000;
-                moneyInput.value = money.toFixed(3); // Định dạng tối đa 3 chữ số sau dấu phẩy
+                moneyInput.value = formatCurrency(money.toFixed(0)); // Làm tròn số tiền
             }
         }
 
@@ -72,7 +82,7 @@
             const viewInput = document.getElementById("view");
             const moneyInput = document.getElementById("money");
 
-            const money = parseFloat(moneyInput.value);
+            const money = parseCurrency(moneyInput.value); // Xóa định dạng để chuyển về số
             if (!isNaN(money)) {
                 const view = (money / RATE_PER_1000) * 1000;
                 viewInput.value = Math.round(view); // Làm tròn số lượng view
