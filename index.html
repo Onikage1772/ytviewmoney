@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính tiền từ View YouTube</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2>Tính tiền từ View YouTube</h2>
+    <label for="view">Số lượng view:</label>
+    <input type="number" id="view" placeholder="Nhập số view" oninput="calculateFromView()">
+
+    <label for="money">Giá tiền (VNĐ):</label>
+    <input type="number" id="money" placeholder="Nhập giá tiền" oninput="calculateFromMoney()">
+
+    <button onclick="resetFields()">Đặt lại</button>
+
+    <script>
+        const RATE_PER_1000 = 12.385; // Tỉ lệ tiền trên 1000 view
+
+        function calculateFromView() {
+            const viewInput = document.getElementById("view");
+            const moneyInput = document.getElementById("money");
+
+            const view = parseFloat(viewInput.value);
+            if (!isNaN(view)) {
+                const money = (view / 1000) * RATE_PER_1000;
+                moneyInput.value = money.toFixed(3); // Định dạng tối đa 3 chữ số sau dấu phẩy
+            }
+        }
+
+        function calculateFromMoney() {
+            const viewInput = document.getElementById("view");
+            const moneyInput = document.getElementById("money");
+
+            const money = parseFloat(moneyInput.value);
+            if (!isNaN(money)) {
+                const view = (money / RATE_PER_1000) * 1000;
+                viewInput.value = Math.round(view); // Làm tròn số lượng view
+            }
+        }
+
+        function resetFields() {
+            document.getElementById("view").value = "";
+            document.getElementById("money").value = "";
+        }
+    </script>
+</body>
+</html>
